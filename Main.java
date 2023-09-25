@@ -72,27 +72,42 @@ public class Main {
     }
 
     public static void removeProduct() {
-        boolean found = false;
-        System.out.println("Ange produkten du vill ta bort: ");
-        searchProduct();
-            /*String productToRemove = input.nextLine();
+    System.out.println("Ange produkten du vill ta bort: ");
+    String productToRemove = input.nextLine();
+    boolean found = false;
+    ArrayList<Product> productsToRemove = new ArrayList<>();
 
-            for (int i = 0; i < allProducts.size(); i++) {
-            Product product = allProducts.get(i);
-            // om produktnamn eller varugrupp, små bokstäver påminner om inputen, små bokstäver
-            if (product.getName().toLowerCase().contains(productToRemove.toLowerCase()) ||
-                    product.getProductGroup().toLowerCase().contains(productToRemove.toLowerCase()))*/ {
-                System.out.println("Är du säker på att du vill ta bort: " + product.getName() + " (j/n)");
-                String answer = input.nextLine();
-                if (answer.equalsIgnoreCase("j")) {
-                    allProducts.remove(i);
-                    found = true;
-                } else if (answer.equalsIgnoreCase("n")) {
-                    // Användaren vill gå tillbaka till menyn
-                    return;
-                }
+    for (int i = 0; i < allProducts.size(); i++) {
+        Product product = allProducts.get(i);
+        // om produktnamn eller varugrupp, små bokstäver påminner om inputen, små bokstäver
+        if (product.getName().toLowerCase().contains(productToRemove.toLowerCase()) ||
+            product.getProductGroup().toLowerCase().contains(productToRemove.toLowerCase())) {
+            productsToRemove.add(product);
+        }
+    }
+    if (productsToRemove.isEmpty()) {
+        System.out.println("Inga produkter hittades.");
+    } else {
+        System.out.println("Följande produkter hittades:");
+
+        for (Product product : productsToRemove) {
+            System.out.println(product.getName());
+        }
+
+        System.out.println("Är du säker på att du vill ta bort alla dessa produkter? (j/n)");
+        String answer = input.nextLine();
+        if (answer.equalsIgnoreCase("j")) {
+            for (Product product : productsToRemove) {
+                allProducts.remove(product);
             }
-        //}
+            System.out.println("Alla matchande produkter har tagits bort.");
+        } else if (answer.equalsIgnoreCase("n")) {
+            // Användaren vill gå tillbaka till menyn
+            return;
+        }
+    }
+}
+
         if (found) {
             System.out.println(searchProduct() + " har tagits bort.");
         } else {
