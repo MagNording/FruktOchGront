@@ -21,7 +21,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Namn: %s, pris: %.2f kr/kg, varugrupp: %s"
+        return "Namn: %s, Pris: %.2f kr/kg, Varugrupp: %s"
                 .formatted(name, price, productGroup);
     }
 
