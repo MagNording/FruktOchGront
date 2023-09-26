@@ -102,12 +102,20 @@ public class Main {
         }
     }
 
-    public static void searchProduct() {
+    public static Product searchProduct() {
         if (allProducts.isEmpty()) {
             System.out.println("Produktlistan är tom.");
         } else {
-            for (ProductType product : allProducts) {
-                System.out.println(product.toString());
+            System.out.println("Ange sökterm: ");
+            String searchTerm = input.nextLine();
+            
+            for (int i = 0; i < allProducts.size(); i++) {
+                Product product = allProducts.get(i);
+                if (product.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        product.getProductGroup().toLowerCase().contains(searchTerm.toLowerCase())) {
+                    System.out.println(product);
+                    return product;
+                }
             }
         }
     }
