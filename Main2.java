@@ -6,13 +6,13 @@ import java.util.Scanner;
 public class Main {
     static Scanner input = new Scanner(System.in);
 
-    static ArrayList<Product> allProducts = new ArrayList<>();
+    static ArrayList<Product> allProducts = new ArrayList<>(); // ArrayList allProducts
 
     public static void main(String[] args) {
 
         boolean exitMenu = false;
 
-        System.out.println("FRUKT OCH GRÖNT\nProgrammet startas.\n");
+        System.out.println("FRUKT OCH GRÖNT\nProgrammet startas.\n"); // Programstart
 
         do {
             displayMenu();
@@ -24,8 +24,7 @@ public class Main {
                     case 0 -> exitMenu = true;
                     case 1 -> addNewProduct();
                     case 2 -> removeProduct();
-                    case 3 -> displayAllProducts();
-                    //case 4 -> searchProduct(); // Aktivera produktsök...
+                    case 3 -> searchProduct();
                 }
             } catch (InputMismatchException e) {
                 input.nextLine();
@@ -34,20 +33,20 @@ public class Main {
             System.out.println();
         } while (!exitMenu);
 
-        System.out.println("Tack, programmet avslutas.");
+        System.out.println("Tack, programmet avslutas."); // Programslut
     }
 
     public static void displayMenu() {
         // Skapa en array
         String[] menu = {
                 "0. Avsluta programmet.",
-                "1. Lägg till en produkt.",
-                "2. Ta bort en produkt.",
-                "3. Visa samtliga produkter.",
-                //"4. Sök produkt."
+                "1. Lägg till en vara.",
+                "2. Ta bort en vara.",
+                "3. Söka efter en vara.",
                 "Ange ditt menyval: "};
         for (String choice : menu) {
-            System.out.println(choice);
+            System.out.println(choice);  
+        
         }
     }
 
@@ -62,6 +61,7 @@ public class Main {
                 System.out.print("Ange kilopris eller styckpris: ");
                 double priceInput = input.nextDouble();
                 input.nextLine();
+                
                 ProductType fruit = new ProductType(categoryInput, nameInput, priceInput);
                 allProducts.add(fruit);
                 validInput = false;
@@ -75,14 +75,16 @@ public class Main {
     public static void removeProduct() {
         System.out.println("Ange produkten du vill ta bort: ");
         String productToRemove = input.nextLine();
+        
         boolean found = false;
         for (int i = 0; i < allProducts.size(); i++) {
             ProductType product = allProducts.get(i);
-            // om produktnamn eller varugrupp, små bokstäver påminner om inputen, små bokstäver
+            // Om varunamn eller varugrupp innehåller input
             if (product.getName().toLowerCase().contains(productToRemove.toLowerCase()) ||
                     product.getProductCategory().toLowerCase().contains(productToRemove.toLowerCase())) {
                 System.out.println("Är du säker på att du vill ta bort: " + product.getName() + " (j/n)");
                 String answer = input.nextLine();
+                
                 if (answer.equalsIgnoreCase("j")) {
                     allProducts.remove(i);
                     found = true;
@@ -100,7 +102,7 @@ public class Main {
         }
     }
 
-    public static void displayAllProducts() {
+    public static void searchProduct() {
         if (allProducts.isEmpty()) {
             System.out.println("Produktlistan är tom.");
         } else {
