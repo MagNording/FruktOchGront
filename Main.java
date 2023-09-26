@@ -6,13 +6,13 @@ import java.util.Scanner;
 public class Main {
     public static Scanner input = new Scanner(System.in);
 
-    private static ArrayList<Product> allProducts = new ArrayList<>();
+    private static ArrayList<Product> allProducts = new ArrayList<>(); // ArrayList allProducts
 
     public static void main(String[] args) {
 
         boolean exitMenu = false;
 
-        System.out.println("FRUKT OCH GRÖNT\nProgrammet startas.\n");
+        System.out.println("FRUKT OCH GRÖNT\nProgrammet startas.\n"); // Program start
 
         do {
             displayMenu();
@@ -33,7 +33,7 @@ public class Main {
             System.out.println();
         } while (!exitMenu);
 
-        System.out.println("Tack, programmet avslutas.");
+        System.out.println("Tack, programmet avslutas."); // Program End
     }
 
     public static void displayMenu() {
@@ -60,6 +60,7 @@ public class Main {
                 input.nextLine();
                 System.out.print("Ange varugrupp: ");
                 String categoryInput = input.nextLine();
+                
                 Product product = new Product(nameInput, priceInput, categoryInput);
                 allProducts.add(product);
                 validInput = false;
@@ -79,7 +80,7 @@ public class Main {
 
     for (int i = 0; i < allProducts.size(); i++) {
         Product product = allProducts.get(i);
-        // om produktnamn eller varugrupp, små bokstäver påminner om inputen, små bokstäver
+        // om varunamn eller varugrupp påminner om inputen
         if (product.getName().toLowerCase().contains(productToRemove.toLowerCase()) ||
             product.getProductGroup().toLowerCase().contains(productToRemove.toLowerCase())) {
             productsToRemove.add(product);
@@ -93,7 +94,6 @@ public class Main {
         for (Product product : productsToRemove) {
             System.out.println(product.getName());
         }
-
         System.out.println("Är du säker på att du vill ta bort alla dessa produkter? (j/n)");
         String answer = input.nextLine();
         if (answer.equalsIgnoreCase("j")) {
@@ -121,7 +121,7 @@ public class Main {
         } else {
             System.out.println("Ange sökterm: ");
             String searchTerm = input.nextLine();
-            //boolean found = false;
+            
             for (int i = 0; i < allProducts.size(); i++) {
                 Product product = allProducts.get(i);
                 if (product.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
