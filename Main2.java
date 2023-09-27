@@ -54,15 +54,15 @@ public class Main {
         boolean validInput = true;
         while (validInput) {
             try {
-                System.out.print("Ange varugrupp: ");
-                String categoryInput = input.nextLine();
                 System.out.print("Ange produktnamn: ");
                 String nameInput = input.nextLine();
                 System.out.print("Ange kilopris eller styckpris: ");
                 double priceInput = input.nextDouble();
                 input.nextLine();
+                System.out.print("Ange varugrupp: ");
+                String categoryInput = input.nextLine();
                 
-                ProductType fruit = new ProductType(categoryInput, nameInput, priceInput);
+                ProductType product = new ProductType(nameInput, priceInput, categoryInput);
                 allProducts.add(fruit);
                 validInput = false;
             } catch (InputMismatchException ime) {
