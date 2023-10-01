@@ -3,6 +3,7 @@ public class Product {
     private String name;
     private double price;
     private String productGroup;
+    private boolean isWeightPrice;
 
     public Product(String name) {
         this.name = name;
@@ -13,16 +14,20 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String name, double price, String productGroup) {
+    public Product(String name, double price, String productGroup, boolean isWeightPrice) {
         this.name = name;
         this.price = price;
         this.productGroup = productGroup;
+
     }
 
     @Override
-    public String toString() {
-       return "Namn: %s, Pris: %.2f kr/kg, Varugrupp: %s"
-                .formatted(name, price, productGroup);
+    public String toString() { 
+        if (isWeightPrice) {
+            return "Produkt: Vara: %s Pris: %.2f Varugrupp: %s".
+                    formatted(name, price, productGroup);
+        } return "Produkt: Vara: %s Pris: %.2f Varugrupp: %s".
+                formatted(name, price, productGroup);
     }
 
     public String getName() {
