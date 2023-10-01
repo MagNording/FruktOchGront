@@ -18,7 +18,7 @@ public class Product {
         this.name = name;
         this.price = price;
         this.productGroup = productGroup;
-
+        this.isWeightPrice = isWeightPrice;
     }
 
     @Override
