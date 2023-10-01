@@ -53,4 +53,12 @@ public class Product {
     public void setProductGroup(String productGroup) {
         this.productGroup = productGroup;
     }
+
+    public boolean isWeightPrice() {
+        return isWeightPrice;
+    }
+
+    public void setWeightPrice(boolean weightPrice) {
+        isWeightPrice = weightPrice;
+    }
 }
