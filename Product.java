@@ -31,7 +31,7 @@ public class Product {
             productGroupStr = String.join(", ", productGroup);
         }
 
-        return String.format("Produkt:%s %s: %.2f Varugrupp: %s",
+        return String.format("Produkt: %-10s %s: %.2f Varugrupp: %-20s",
                 name, priceType, price, productGroupStr);
     }
 
