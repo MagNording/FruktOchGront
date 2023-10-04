@@ -16,7 +16,7 @@ public class Main {
         System.out.println("FRUKT OCH GRÖNT"); // Program start
         System.out.println("----------------");
         System.out.println("Programmet startas.");
-        System.out.println("Här kan ni lägga in varor, ta bort dem och kontrollera priset.\n");
+        System.out.println("Här kan ni lägga till varor, ta bort dem och kontrollera priset.\n");
 
         displayMenu();
 
@@ -25,6 +25,8 @@ public class Main {
         allProducts.add(new Product("Nektarin", 10, new String[]{"Stenfrukt", "Frukt"}, false));
         allProducts.add(new Product("Apelsin", 29.90, new String[]{"Jaffa", "Frukt"}, true));
         allProducts.add(new Product("Persika", 15, new String[]{"Stenfrukt", "Frukt"}, false));
+        allProducts.add(new Product("Blomkål", 29.95, new String[]{"Kål", "Grönsak"}, true));
+        allProducts.add(new Product("Broccoli", 18.83, new String[]{"Kål", "Grönsak"}, true));
 
         do {
             try {
@@ -37,8 +39,7 @@ public class Main {
                     case 3 -> displayAllProducts();
                     case 4 -> searchProduct();
                     case 5 -> checkPrice();
-                    //case 6 -> updateProductInfo();
-                    case 7 -> displayMenu();
+                    case 6 -> displayMenu();
                 }
             } catch (InputMismatchException e) {
                 input.nextLine();
@@ -48,24 +49,6 @@ public class Main {
         } while (!exitMenu);
 
         System.out.println("Tack, programmet avslutas."); // Program End
-    }
-
-    private static void displayMenu() {
-        // Skapa en array
-        String[] menu = {
-                "0. Avsluta programmet.",
-                "1. Lägg till en produkt.",
-                "2. Ta bort en produkt.",
-                "3. Visa alla produkter.",
-                "4. Sök produkt.",
-                "5. Kolla totalpris.",
-                //"6. Uppdatera en produkt.",
-                "7. Visa menyn."
-        };
-        for (String choice : menu) {
-            System.out.println(choice);
-        }
-        System.out.print("\nAnge ditt menyval: ");
     }
 
     private static void addNewProduct() {
@@ -90,7 +73,7 @@ public class Main {
                 Product product = new Product(nameInput, priceInput, categoryArray, isWeightPrice);
                 allProducts.add(product);
                 System.out.println(product.getName() + " är tillagd.");
-                System.out.println("Välj 1. Lägga till fler produkter.\nVälj 7. Tillbaka till menyn");
+                System.out.println("Välj 1. Lägga till fler produkter.\nVälj 6. Tillbaka till menyn");
                 validInput = false;
             } catch (InputMismatchException ime) {
                 input.nextLine();
@@ -103,14 +86,17 @@ public class Main {
     private static void removeProduct() {
         System.out.println("Ange produkten du vill ta bort: ");
         String productToRemove = input.nextLine().trim().toLowerCase();
-
+        if (productToRemove.isEmpty()) {
+            System.out.println("Ingen produkt angiven. Ingen ändring har gjorts.");
+            System.out.println("Välj 2. Ange exakt produktnamn.");
+            return;
+        }
         boolean removed = false;
         Iterator<Product> iterator = allProducts.iterator();
 
         while (iterator.hasNext()) {
             Product product = iterator.next();
             String productName = product.getName().toLowerCase();
-
             // Kolla om produkten ska tas bort baserat på namnet
             if (productName.contains(productToRemove)) {
                 iterator.remove();
@@ -122,7 +108,7 @@ public class Main {
         } else {
             System.out.println("Ingen matchande produkt hittades.");
         }
-        System.out.println("Välj 7. Tillbaka till menyn");
+        System.out.println("Välj 6. Tillbaka till menyn");
     }
 
     // 3. Visa alla tillagda produkter
@@ -131,14 +117,14 @@ public class Main {
             for (Product product : allProducts) {
                 System.out.println(product.toString());
             }
-            System.out.println("Välj 7. Tillbaka till menyn");
+            System.out.println("Välj 6. Tillbaka till menyn");
         } else {
             System.out.println("Produktlistan är tom.");
-            System.out.println("Välj 7. Tillbaka till menyn");
+            System.out.println("Välj 6. Tillbaka till menyn");
         }
     }
 
-    // Sök produkt är fan inte bra just nu!!!
+    // 4. Söka produkt
     private static void searchProduct() {
         Product product = null;
         if (allProducts.isEmpty()) {
@@ -171,9 +157,8 @@ public class Main {
                 }
             }
         }
-        System.out.println("Välj 4. Fler sökningar\nVälj 7. Tillbaka till menyn");
+        System.out.println("Välj 4. Fler sökningar\nVälj 6. Tillbaka till menyn");
     }
-
 
     // 5. Kolla totalpris
     private static void checkPrice() {
@@ -197,7 +182,7 @@ public class Main {
                     double priceInput = Double.parseDouble(price);
                     double result = priceInput * weightInput;
                     System.out.printf("Priset för %.2f kg: %.2f kr.\n", weightInput, result);
-                    System.out.println("Välj 5. Mer priskoll.\nVälj 7. Tillbaka till menyn.");
+                    System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
                     validInput = false;
                 } catch (NumberFormatException nfe) {
                     input.nextLine();
@@ -222,8 +207,26 @@ public class Main {
                 System.out.println("Felaktig inmatning, ange en siffra.");
             }
             System.out.printf("Priset för %d st: %.2f kr.\n", numOfUnits, result);
-            System.out.println("Välj 5. Mer priskoll.\nVälj 7. Tillbaka till menyn.");
+            System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
         }
+    }
+
+    // 6. Visa menyn
+    private static void displayMenu() {
+        // Skapa en array
+        String[] menu = {
+                "0. Avsluta programmet.",
+                "1. Lägg till en produkt.",
+                "2. Ta bort en produkt.",
+                "3. Visa alla produkter.",
+                "4. Sök produkt.",
+                "5. Kolla totalpris.",
+                "6. Visa menyn."
+        };
+        for (String choice : menu) {
+            System.out.println(choice);
+        }
+        System.out.print("\nAnge ditt menyval: ");
     }
 }
 
