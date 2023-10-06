@@ -1,4 +1,5 @@
 // magnus.nording@iths.se
+
 public class Product {
     private String name;
     private double price;
@@ -30,7 +31,6 @@ public class Product {
         if (productGroup != null && productGroup.length > 0) {
             productGroupStr = String.join(", ", productGroup);
         }
-
         return String.format("Produkt: %-10s %s: %.2f Varugrupp: %-20s",
                 name, priceType, price, productGroupStr);
     }
