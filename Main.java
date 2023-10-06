@@ -1,8 +1,5 @@
 // Magnus Nording, magnus.nording@iths.se
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static Scanner input = new Scanner(System.in);
@@ -20,13 +17,13 @@ public class Main {
 
         displayMenu();
 
-        allProducts.add(new Product("Banan", 25.90, new String[]{"Chiquita", "Frukt"}, true));
         allProducts.add(new Product("Äpple", 25.99, new String[]{"Granny Smith", "Frukt"}, true));
         allProducts.add(new Product("Nektarin", 10, new String[]{"Stenfrukt", "Frukt"}, false));
-        allProducts.add(new Product("Apelsin", 29.90, new String[]{"Jaffa", "Frukt"}, true));
         allProducts.add(new Product("Persika", 15, new String[]{"Stenfrukt", "Frukt"}, false));
+        allProducts.add(new Product("Morot", 16.48, new String[]{"Rotfrukt", "Grönsak"}, true));
         allProducts.add(new Product("Blomkål", 29.95, new String[]{"Kål", "Grönsak"}, true));
         allProducts.add(new Product("Broccoli", 18.83, new String[]{"Kål", "Grönsak"}, true));
+
 
         do {
             try {
@@ -56,8 +53,11 @@ public class Main {
         while (validInput) {
             try {
                 System.out.print("Ange produktens namn: ");
-                String nameInput = input.nextLine();
-
+                String nameInput = input.nextLine().trim();
+                if (nameInput.isEmpty()) {
+                    System.out.println("Du måste ange ett namn.");
+                    continue; // Gå tillbaka till början av loopen
+                }
                 System.out.print("Ange kilopris eller styckpris: ");
                 String price = input.nextLine();
                 price = price.replace(",", "."); // Ersätt komma med punkt
@@ -97,7 +97,7 @@ public class Main {
         while (iterator.hasNext()) {
             Product product = iterator.next();
             String productName = product.getName().toLowerCase();
-            // Kolla om produkten ska tas bort baserat på namnet
+
             if (productName.contains(productToRemove)) {
                 iterator.remove();
                 removed = true;
@@ -114,6 +114,7 @@ public class Main {
     // 3. Visa alla tillagda produkter
     private static void displayAllProducts() {
         if (!allProducts.isEmpty()) {
+            Collections.sort(allProducts, Comparator.comparing(Product::getName));
             for (Product product : allProducts) {
                 System.out.println(product.toString());
             }
@@ -149,7 +150,6 @@ public class Main {
                             }
                         }
                     }
-
                     if (foundInGroup) {
                         System.out.println(product);
 
