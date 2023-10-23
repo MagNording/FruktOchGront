@@ -2,9 +2,9 @@
 import java.util.*;
 
 public class Main {
-    private static Scanner input = new Scanner(System.in);
+    public static Scanner input = new Scanner(System.in);
 
-    private static ArrayList<Product> allProducts = new ArrayList<>(); // ArrayList allProducts
+    public static ArrayList<Product> allProducts = new ArrayList<>(); // ArrayList allProducts
 
     public static void main(String[] args) {
 
@@ -17,11 +17,8 @@ public class Main {
 
         displayMenu();
 
-        allProducts.add(new Product("Äpple", 25.99, new String[]{"Granny Smith", "Frukt"}, true));
         allProducts.add(new Product("Nektarin", 10, new String[]{"Stenfrukt", "Frukt"}, false));
-        allProducts.add(new Product("Persika", 15, new String[]{"Stenfrukt", "Frukt"}, false));
         allProducts.add(new Product("Morot", 16.48, new String[]{"Rotfrukt", "Grönsak"}, true));
-        allProducts.add(new Product("Blomkål", 29.95, new String[]{"Kål", "Grönsak"}, true));
         allProducts.add(new Product("Broccoli", 18.83, new String[]{"Kål", "Grönsak"}, true));
 
 
@@ -48,42 +45,22 @@ public class Main {
         System.out.println("Tack, programmet avslutas."); // Program End
     }
 
-    private static void addNewProduct() {
-        boolean validInput = true;
-        while (validInput) {
-            try {
-                System.out.print("Ange produktens namn: ");
-                String nameInput = input.nextLine().trim();
-                if (nameInput.isEmpty()) {
-                    System.out.println("Du måste ange ett namn.");
-                    continue; // Gå tillbaka till början av loopen
-                }
-                System.out.print("Ange kilopris eller styckpris: ");
-                String price = input.nextLine();
-                price = price.replace(",", "."); // Ersätt komma med punkt
-                double priceInput = Double.parseDouble(price); // Parse price till en double
+    // 1. Lägg till en produkt
+    public static void addNewProduct() {
+        String nameInput = getProductName();
+        double priceInput = getProductPrice();
+        String[] categoryArray = getProductCategories();
+        boolean isWeightPrice = getProductPriceType();
 
-                System.out.print("Ange varugrupp/-er (kommaseparerad lista): ");
-                String categoryInput = input.nextLine();
-                String[] categoryArray = categoryInput.split(",");
-                System.out.println("Ange om det är viktpris eller ej (true/false): ");
-                String isWeightInput = input.nextLine();
-                boolean isWeightPrice = Boolean.parseBoolean(isWeightInput);
+        Product product = new Product(nameInput, priceInput, categoryArray, isWeightPrice);
+        allProducts.add(product);
 
-                Product product = new Product(nameInput, priceInput, categoryArray, isWeightPrice);
-                allProducts.add(product);
-                System.out.println(product.getName() + " är tillagd.");
-                System.out.println("Välj 1. Lägga till fler produkter.\nVälj 6. Tillbaka till menyn");
-                validInput = false;
-            } catch (InputMismatchException ime) {
-                input.nextLine();
-                System.out.println("Felaktig inmatning, försök igen.\n");
-            }
-        }
+        System.out.println(product.getName() + " är tillagd.");
+        System.out.println("Välj 1. Lägga till fler produkter.\nVälj 6. Tillbaka till menyn");
     }
 
     // 2. Ta bort en produkt
-    private static void removeProduct() {
+    public static void removeProduct() {
         System.out.println("Ange produkten du vill ta bort: ");
         String productToRemove = input.nextLine().trim().toLowerCase();
         if (productToRemove.isEmpty()) {
@@ -112,22 +89,23 @@ public class Main {
     }
 
     // 3. Visa alla tillagda produkter
-    private static void displayAllProducts() {
+    public static void displayAllProducts() {
         if (!allProducts.isEmpty()) {
             Collections.sort(allProducts, Comparator.comparing(Product::getName));
             for (Product product : allProducts) {
                 System.out.println(product.toString());
             }
-            System.out.println("Välj 6. Tillbaka till menyn");
+            System.out.println();
+            displayMenu();
         } else {
             System.out.println("Produktlistan är tom.");
-            System.out.println("Välj 6. Tillbaka till menyn");
+            displayMenu();
         }
     }
 
     // 4. Söka produkt
-    private static void searchProduct() {
-        Product product = null;
+    public static void searchProduct() {
+        Product product;
         if (allProducts.isEmpty()) {
             System.out.println("Produktlistan är tom.");
         } else {
@@ -152,7 +130,6 @@ public class Main {
                     }
                     if (foundInGroup) {
                         System.out.println(product);
-
                     }
                 }
             }
@@ -161,58 +138,56 @@ public class Main {
     }
 
     // 5. Kolla totalpris
-    private static void checkPrice() {
-        System.out.println("Ange om det är viktpris(true) eller styckpris(false).");
-        String isWeightInput = input.nextLine().trim();
-        boolean isWeight = Boolean.parseBoolean(isWeightInput);
+    public static void checkPrice() {
+        System.out.println("Priskollen");
+        boolean isWeight = false;
+        boolean validInput = false;
 
-        // Om det är pris/kg
-        boolean validInput = true;
-        if (isWeight) {
-            while (validInput) {
-                try {
-                    System.out.println("Ange vikten: ");
-                    String weight = input.nextLine().trim();
-                    weight = weight.replace(",", "."); // Ersätt komma med punkt
-                    double weightInput = Double.parseDouble(weight);
-
-                    System.out.println("Ange kilopris: ");
-                    String price = input.nextLine();
-                    price = price.replace(",", ".");
-                    double priceInput = Double.parseDouble(price);
-                    double result = priceInput * weightInput;
-                    System.out.printf("Priset för %.2f kg: %.2f kr.\n", weightInput, result);
-                    System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
-                    validInput = false;
-                } catch (NumberFormatException nfe) {
-                    input.nextLine();
-                    System.out.println("Felaktig inmatning, försök igen.\n");
-                }
-            }
-            // om det är pris/st
-        } else {
-            int pricePerUnit;
-            int numOfUnits = 0;
-            double result = 0;
+        while (!validInput) {
             try {
-                System.out.print("Ange ett heltal för pris/enhet: ");
-                pricePerUnit = input.nextInt();
-                input.nextLine();
-                System.out.print("Ange antalet enheter: ");
-                numOfUnits = input.nextInt();
-                input.nextLine();
-                result = pricePerUnit * numOfUnits;
-            } catch (InputMismatchException e) {
-                input.nextLine();
-                System.out.println("Felaktig inmatning, ange en siffra.");
+                System.out.println("1. Viktpris\n2. Styckpris");
+                String userInput = input.nextLine();
+                int choice = Integer.parseInt(userInput);
+
+                if (choice == 1 || choice == 2) {
+                    isWeight = (choice == 1); // Sätt isWeight baserat på användarens val
+                    validInput = true;
+                } else {
+                    System.out.println("Felaktig inmatning, välj 1 eller 2.");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Felaktig inmatning, försök igen.");
             }
-            System.out.printf("Priset för %d st: %.2f kr.\n", numOfUnits, result);
-            System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
+        }
+        if (isWeight) {
+            weightPrice();
+        } else {
+            unitPrice();
         }
     }
 
+    // Om det är pris/kg
+    public static void weightPrice() {
+            double weightInput = getInputDouble("Ange vikten: ");
+            double priceInput = getInputDouble("Ange kilopris: ");
+
+            double result = priceInput * weightInput;
+            System.out.printf("Priset för %.2f kg: %.2f kr.%n", weightInput, result);
+            System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
+        }
+
+    // Om det är pris/st
+    public static void unitPrice() {
+        int pricePerUnit = getInputInt("Ange ett heltal för pris/enhet: ");
+        int numOfUnits = getInputInt("Ange antalet enheter: ");
+
+        double result = pricePerUnit * numOfUnits;
+        System.out.printf("Priset för %d st: %.2f kr.%n", numOfUnits, result);
+        System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
+    }
+
     // 6. Visa menyn
-    private static void displayMenu() {
+    public static void displayMenu() {
         // Skapa en array
         String[] menu = {
                 "0. Avsluta programmet.",
@@ -228,7 +203,88 @@ public class Main {
         }
         System.out.print("\nAnge ditt menyval: ");
     }
+
+
+    public static String getProductName() {
+        String nameInput;
+        while (true) {
+            System.out.print("Ange produktens namn: ");
+            nameInput = input.nextLine().trim();
+            if (!nameInput.isEmpty()) {
+                return nameInput;
+            }
+            System.out.println("Du måste ange ett namn.");
+        }
+    }
+
+    public static double getProductPrice() {
+        while (true) {
+            try {
+                System.out.print("Ange pris: ");
+                String price = input.nextLine();
+                price = price.replace(",", ".");
+                return Double.parseDouble(price);
+            } catch (NumberFormatException nfe) {
+                System.out.println("Felaktig inmatning, försök igen.");
+            }
+        }
+    }
+
+    public static String[] getProductCategories() {
+        System.out.print("Ange varugrupp/-er (kommaseparerad lista): ");
+        String categoryInput = input.nextLine();
+        return categoryInput.split(",");
+    }
+
+    public static boolean getProductPriceType() {
+        while (true) {
+            System.out.println("1. Viktpris\n2. Styckpris");
+            try {
+                int isWeightInput = input.nextInt();
+                if (isWeightInput == 1 || isWeightInput == 2) {
+                    return isWeightInput == 1;
+                } else {
+                    System.out.println("Felaktig inmatning, välj 1 eller 2.");
+                }
+            } catch (InputMismatchException e) {
+                input.nextLine(); // Rensa inmatningsbufferten
+                System.out.println("Felaktig inmatning, välj 1 eller 2.");
+            }
+        }
+    }
+
+    public static int getInputInt(String prompt) {
+        boolean validInput = false;
+        int inputValue = 0;
+
+        while (!validInput) {
+            try {
+                System.out.print(prompt);
+                inputValue = input.nextInt();
+                input.nextLine();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                input.nextLine();
+                System.out.println("Felaktig inmatning, ange ett heltal.");
+            }
+        }
+        return inputValue;
+    }
+
+    public static double getInputDouble(String prompt) {
+        boolean validInput = false;
+        double inputValue = 0;
+
+        while (!validInput) {
+            try {
+                System.out.print(prompt);
+                String userInput = input.nextLine().trim().replace(",", ".");
+                inputValue = Double.parseDouble(userInput);
+                validInput = true;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Felaktig inmatning, försök igen.");
+            }
+        }
+        return inputValue;
+    }
 }
-
-
-
