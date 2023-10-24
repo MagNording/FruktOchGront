@@ -13,7 +13,7 @@ public class Main {
         System.out.println("FRUKT OCH GRÖNT"); // Program start
         System.out.println("----------------");
         System.out.println("Programmet startas.");
-        System.out.println("Här kan ni lägga till varor, ta bort dem och kontrollera priset.\n");
+        System.out.println("Här kan ni lägga till varor, ta bort dem och kontrollera priset.");
 
         displayMenu();
 
@@ -56,7 +56,7 @@ public class Main {
         allProducts.add(product);
 
         System.out.println(product.getName() + " är tillagd.");
-        System.out.println("Välj 1. Lägga till fler produkter.\nVälj 6. Tillbaka till menyn");
+        displayMenu();
     }
 
     // 2. Ta bort en produkt
@@ -85,7 +85,7 @@ public class Main {
         } else {
             System.out.println("Ingen matchande produkt hittades.");
         }
-        System.out.println("Välj 6. Tillbaka till menyn");
+        displayMenu();
     }
 
     // 3. Visa alla tillagda produkter
@@ -134,7 +134,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("Välj 4. Fler sökningar\nVälj 6. Tillbaka till menyn");
+        displayMenu();
     }
 
     // 5. Kolla totalpris
@@ -173,7 +173,7 @@ public class Main {
 
             double result = priceInput * weightInput;
             System.out.printf("Priset för %.2f kg: %.2f kr.%n", weightInput, result);
-            System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
+            displayMenu();
         }
 
     // Om det är pris/st
@@ -183,14 +183,14 @@ public class Main {
 
         double result = pricePerUnit * numOfUnits;
         System.out.printf("Priset för %d st: %.2f kr.%n", numOfUnits, result);
-        System.out.println("Välj 5. Mer priskoll.\nVälj 6. Tillbaka till menyn.");
+        displayMenu();
     }
 
     // 6. Visa menyn
     public static void displayMenu() {
         // Skapa en array
         String[] menu = {
-                "0. Avsluta programmet.",
+                "\n0. Avsluta programmet.",
                 "1. Lägg till en produkt.",
                 "2. Ta bort en produkt.",
                 "3. Visa alla produkter.",
