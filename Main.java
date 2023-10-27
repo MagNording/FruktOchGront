@@ -178,8 +178,8 @@ public class Main {
 
     // Om det är pris/st
     public static void unitPrice() {
-        int pricePerUnit = getInputInt("Ange ett heltal för pris/enhet: ");
-        int numOfUnits = getInputInt("Ange antalet enheter: ");
+        int pricePerUnit = getInputInt("Ange pris/st: ");
+        int numOfUnits = getInputInt("Ange antal: ");
 
         double result = pricePerUnit * numOfUnits;
         System.out.printf("Priset för %d st: %.2f kr.%n", numOfUnits, result);
@@ -195,8 +195,7 @@ public class Main {
                 "2. Ta bort en produkt.",
                 "3. Visa alla produkter.",
                 "4. Sök produkt.",
-                "5. Kolla totalpris.",
-                "6. Visa menyn."
+                "5. Kolla totalpris."
         };
         for (String choice : menu) {
             System.out.println(choice);
