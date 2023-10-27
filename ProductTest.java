@@ -43,18 +43,4 @@ class ProductTest {
         assertEquals(newPrice, actualPrice);
     }
 
-    // @Test
-    // void testToString() {
-    //     Product product = new Product("Banan", 3.99);
-    //     product.setIsWeightPrice(true);
-    //     String[] productGroup = { "Chiquita", "Frukt" };
-    //     product.setProductGroup(productGroup);
-
-    //     String expectedToString = "Produkt: %-10s %s: %.2f Varugrupp: %-20s";
-    //     String actualToString = product.toString();
-
-    //     assertEquals(expectedToString, actualToString);
-    // }
-
-
 }
