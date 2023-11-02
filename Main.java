@@ -137,52 +137,58 @@ public class Main {
         displayMenu();
     }
 
-    // 5. Kolla totalpris
-    public static void checkPrice() {
-        System.out.println("Priskollen");
-        boolean isWeight = false;
-        boolean validInput = false;
+   // 5. Kolla totalpris
+    public static void checkPrice() { // Tillbaka till menyn?
+        Product productToCheck = null;
+        System.out.println("Ange sökterm: ");
+        String searchTerm = UserInput.readString();
 
-        while (!validInput) {
-            try {
-                System.out.println("1. Viktpris\n2. Styckpris");
-                String userInput = input.nextLine();
-                int choice = Integer.parseInt(userInput);
-
-                if (choice == 1 || choice == 2) {
-                    isWeight = (choice == 1); // Sätt isWeight baserat på användarens val
-                    validInput = true;
-                } else {
-                    System.out.println("Felaktig inmatning, välj 1 eller 2.");
-                }
-            } catch (NumberFormatException nfe) {
-                System.out.println("Felaktig inmatning, försök igen.");
+        for (int i = 0; i < allProducts.size(); i++) {
+            Product product = allProducts.get(i);
+            if (product.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+                productToCheck = product;
+                System.out.println(product);
+                break;
             }
         }
-        if (isWeight) {
-            weightPrice();
-        } else {
-            unitPrice();
+        if (productToCheck != null) {
+            System.out.print("1. Viktpris\n2. Styckpris\n> ");
+            int isWeightInput = UserInput.readInt();
+            boolean isWeightPrice = isWeightInput == 1;
+
+            if (isWeightPrice) {
+                weightPrice(productToCheck);
+            } else {
+                unitPrice(productToCheck);
+            }
         }
     }
 
-    // Om det är pris/kg
-    public static void weightPrice() {
-            double weightInput = getInputDouble("Ange vikten: ");
-            double priceInput = getInputDouble("Ange kilopris: ");
+    public static void weightPrice(Product productToCheck) {
+        boolean validInput = true;
+        while (validInput) {
+            System.out.println("Ange vikten: ");
+            double weightInput = UserInput.readDouble();
 
+            // Använd priset från produkten
+            double priceInput = productToCheck.getPrice();
             double result = priceInput * weightInput;
-            System.out.printf("Priset för %.2f kg: %.2f kr.%n", weightInput, result);
+            System.out.printf("Priset för %.2f kg: %.2f kr.\n", weightInput, result);
             displayMenu();
+            validInput = false;
         }
+    }
 
-    // Om det är pris/st
-    public static void unitPrice() {
-        int pricePerUnit = getInputInt("Ange pris/st: ");
-        int numOfUnits = getInputInt("Ange antal: ");
+    public static void unitPrice(Product productToCheck) {
+        int numOfUnits;
+        double result;
+        System.out.print("Ange antalet enheter: ");
+        numOfUnits = UserInput.readInt();
+        // Använd priset från produkten
+        double pricePerUnit = productToCheck.getPrice();
+        result = pricePerUnit * numOfUnits;
 
-        double result = pricePerUnit * numOfUnits;
-        System.out.printf("Priset för %d st: %.2f kr.%n", numOfUnits, result);
+        System.out.printf("Priset för %d st: %.2f kr.\n", numOfUnits, result);
         displayMenu();
     }
 
