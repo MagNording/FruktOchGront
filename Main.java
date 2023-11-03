@@ -1,4 +1,6 @@
 // Magnus Nording, magnus.nording@iths.se
+import se.java23.nording.utils.UserInput;
+
 import java.util.*;
 
 public class Main {
@@ -62,7 +64,7 @@ public class Main {
     // 2. Ta bort en produkt
     public static void removeProduct() {
         System.out.println("Ange produkten du vill ta bort: ");
-        String productToRemove = input.nextLine().trim().toLowerCase();
+        String productToRemove = UserInput.readString();
         if (productToRemove.isEmpty()) {
             System.out.println("Ingen produkt angiven. Ingen ändring har gjorts.");
             System.out.println("Välj 2. Ange exakt produktnamn.");
@@ -75,7 +77,7 @@ public class Main {
             Product product = iterator.next();
             String productName = product.getName().toLowerCase();
 
-            if (productName.contains(productToRemove)) {
+            if (productName.equalsIgnoreCase(productToRemove)) {
                 iterator.remove();
                 removed = true;
             }
@@ -110,7 +112,7 @@ public class Main {
             System.out.println("Produktlistan är tom.");
         } else {
             System.out.println("Ange sökterm: ");
-            String searchTerm = input.nextLine().trim();
+            String searchTerm = UserInput.readString();
 
             for (int i = 0; i < allProducts.size(); i++) {
                 product = allProducts.get(i);
@@ -214,7 +216,7 @@ public class Main {
         String nameInput;
         while (true) {
             System.out.print("Ange produktens namn: ");
-            nameInput = input.nextLine().trim();
+            nameInput = UserInput.readString();
             if (!nameInput.isEmpty()) {
                 return nameInput;
             }
@@ -225,10 +227,10 @@ public class Main {
     public static double getProductPrice() {
         while (true) {
             try {
-                System.out.print("Ange pris: ");
-                String price = input.nextLine();
-                price = price.replace(",", ".");
-                return Double.parseDouble(price);
+            System.out.print("Ange pris: ");
+            String price = UserInput.readString();
+            price = price.replace(",", ".");
+            return Double.parseDouble(price);
             } catch (NumberFormatException nfe) {
                 System.out.println("Felaktig inmatning, försök igen.");
             }
@@ -237,59 +239,19 @@ public class Main {
 
     public static String[] getProductCategories() {
         System.out.print("Ange varugrupp/-er (kommaseparerad lista): ");
-        String categoryInput = input.nextLine();
+        String categoryInput = UserInput.readString();
         return categoryInput.split(",");
     }
 
     public static boolean getProductPriceType() {
         while (true) {
             System.out.println("1. Viktpris\n2. Styckpris");
-            try {
-                int isWeightInput = input.nextInt();
-                if (isWeightInput == 1 || isWeightInput == 2) {
-                    return isWeightInput == 1;
-                } else {
-                    System.out.println("Felaktig inmatning, välj 1 eller 2.");
-                }
-            } catch (InputMismatchException e) {
-                input.nextLine(); // Rensa inmatningsbufferten
+            int isWeightInput = UserInput.readInt();
+            if (isWeightInput == 1 || isWeightInput == 2) {
+                return isWeightInput == 1;
+            } else {
                 System.out.println("Felaktig inmatning, välj 1 eller 2.");
             }
         }
-    }
-
-    public static int getInputInt(String prompt) {
-        boolean validInput = false;
-        int inputValue = 0;
-
-        while (!validInput) {
-            try {
-                System.out.print(prompt);
-                inputValue = input.nextInt();
-                input.nextLine();
-                validInput = true;
-            } catch (InputMismatchException e) {
-                input.nextLine();
-                System.out.println("Felaktig inmatning, ange ett heltal.");
-            }
-        }
-        return inputValue;
-    }
-
-    public static double getInputDouble(String prompt) {
-        boolean validInput = false;
-        double inputValue = 0;
-
-        while (!validInput) {
-            try {
-                System.out.print(prompt);
-                String userInput = input.nextLine().trim().replace(",", ".");
-                inputValue = Double.parseDouble(userInput);
-                validInput = true;
-            } catch (NumberFormatException nfe) {
-                System.out.println("Felaktig inmatning, försök igen.");
-            }
-        }
-        return inputValue;
     }
 }
